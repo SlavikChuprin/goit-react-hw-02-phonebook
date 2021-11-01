@@ -14,11 +14,19 @@ class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
-    name: '',
-    number: '',
   };
+
   submitFromForm = data => {
     const { name, number } = data;
+    const nameAlreadyIs = this.state.contacts.find(
+      contact => contact.name === name,
+    );
+    console.log(`~ nameAlreadyIs`, nameAlreadyIs);
+
+    if (nameAlreadyIs) {
+      alert(`${name} is already in contacts`);
+      return;
+    }
 
     this.setState(prevState =>
       prevState.contacts.push({ id: uuidv4(), name: name, number: number }),
