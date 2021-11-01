@@ -38,16 +38,11 @@ class App extends Component {
       contact.name.toLowerCase().includes(normalizedFilter),
     );
   };
-  deleteContact = e => {
-    console.log(e);
-    // this.setState(prevState =>
-    //   prevState.contacts.reduce((newContact, contact) => {
-    //     if (contact.id !== e.target.parentElement.__reactFiber$x6e9an9lqe.key) {
-    //       newContact.push(contact);
-    //     }
-    //     return newContact;
-    //   }, []),
-    // );
+
+  deleteContact = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id),
+    }));
   };
   render() {
     const onVisibleContacts = this.getVisibleContacts();
