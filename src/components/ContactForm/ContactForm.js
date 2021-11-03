@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import s from './ContactForm.module.css';
+import { v4 as uuidv4 } from 'uuid';
 
 class ContactForm extends Component {
   state = {
     name: '',
     number: '',
+    id: null,
   };
   handleChange = e => {
     const { name, value } = e.currentTarget;
 
-    this.setState({ [name]: value });
+    this.setState({ [name]: value, id: uuidv4() });
   };
 
   handleSubmit = e => {

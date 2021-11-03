@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+
+import './App.css';
 import Filter from './components/Filter';
 import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
-import './App.css';
+import ContactListItem from './components/ContactListItem/ContactListItem';
 
 class App extends Component {
   state = {
@@ -17,20 +18,19 @@ class App extends Component {
   };
 
   submitFromForm = data => {
-    const { name, number } = data;
+    const { name } = data;
     const nameAlreadyIs = this.state.contacts.find(
       contact => contact.name === name,
     );
-    console.log(`~ nameAlreadyIs`, nameAlreadyIs);
 
     if (nameAlreadyIs) {
       alert(`${name} is already in contacts`);
       return;
     }
 
-    this.setState(prevState =>
-      prevState.contacts.push({ id: uuidv4(), name: name, number: number }),
-    );
+    this.setState(prevState => ({
+      contacts: { ...prevState.contacts, ...data },
+    }));
   };
 
   changeFilter = e => {
@@ -54,17 +54,20 @@ class App extends Component {
   };
   render() {
     const onVisibleContacts = this.getVisibleContacts();
-    const { filter } = this.state;
+    const { filter, contacts } = this.state;
     return (
       <div className="App">
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.submitFromForm} />
         <h2> Contacts</h2>
         <Filter value={filter} onChange={this.changeFilter} />
-        <ContactList
-          visibleContacts={onVisibleContacts}
-          onDeleteContact={this.deleteContact}
-        />
+        <ContactList>
+          <ContactListItem
+            contacts={contacts}
+            visibleContacts={onVisibleContacts}
+            onDeleteContact={this.deleteContact}
+          />
+        </ContactList>
       </div>
     );
   }
