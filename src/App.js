@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import './App.css';
 import Filter from './components/Filter';
 import ContactForm from './components/ContactForm';
