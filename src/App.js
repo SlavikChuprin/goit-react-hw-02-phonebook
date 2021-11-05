@@ -3,7 +3,6 @@ import './App.css';
 import Filter from './components/Filter';
 import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
-import ContactListItem from './components/ContactListItem/ContactListItem';
 
 class App extends Component {
   state = {
@@ -18,6 +17,7 @@ class App extends Component {
 
   submitFromForm = data => {
     const { name } = data;
+    const { contacts } = this.state;
     const nameAlreadyIs = this.state.contacts.find(
       contact => contact.name === name,
     );
@@ -26,10 +26,9 @@ class App extends Component {
       alert(`${name} is already in contacts`);
       return;
     }
+    const newContactsArray = [...contacts, data];
 
-    this.setState(prevState => ({
-      contacts: { ...prevState.contacts, ...data },
-    }));
+    this.setState({ contacts: newContactsArray });
   };
 
   changeFilter = e => {
@@ -40,10 +39,11 @@ class App extends Component {
     const { filter, contacts } = this.state;
 
     const normalizedFilter = filter.toLowerCase();
-
-    return contacts.filter(contact =>
-      contact.name.toLowerCase().includes(normalizedFilter),
+    const newContactsArr = contacts.filter(({ name }) =>
+      name.toLowerCase().includes(normalizedFilter),
     );
+
+    return newContactsArr;
   };
 
   deleteContact = id => {
@@ -53,20 +53,17 @@ class App extends Component {
   };
   render() {
     const onVisibleContacts = this.getVisibleContacts();
-    const { filter, contacts } = this.state;
+    const { filter } = this.state;
     return (
       <div className="App">
         <h1>Phonebook</h1>
         <ContactForm onSubmit={this.submitFromForm} />
         <h2> Contacts</h2>
         <Filter value={filter} onChange={this.changeFilter} />
-        <ContactList>
-          <ContactListItem
-            contacts={contacts}
-            visibleContacts={onVisibleContacts}
-            onDeleteContact={this.deleteContact}
-          />
-        </ContactList>
+        <ContactList
+          visibleContacts={onVisibleContacts}
+          onDeleteContact={this.deleteContact}
+        />
       </div>
     );
   }
