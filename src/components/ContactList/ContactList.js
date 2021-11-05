@@ -18,7 +18,7 @@ const ContactList = ({ visibleContacts, onDeleteContact }) => {
 };
 
 ContactList.prototype = {
-  visibleContacts: PropTypes.array.isRequired,
+  visibleContacts: PropTypes.arrayOf(PropTypes.string),
   onDeleteContact: PropTypes.func.isRequired,
 };
 export default ContactList;

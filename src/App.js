@@ -3,7 +3,7 @@ import './App.css';
 import Filter from './components/Filter';
 import ContactForm from './components/ContactForm';
 import ContactList from './components/ContactList';
-
+import { v4 as uuidv4 } from 'uuid';
 class App extends Component {
   state = {
     contacts: [
@@ -17,7 +17,6 @@ class App extends Component {
 
   submitFromForm = data => {
     const { name } = data;
-    const { contacts } = this.state;
     const nameAlreadyIs = this.state.contacts.find(
       contact => contact.name === name,
     );
@@ -26,9 +25,10 @@ class App extends Component {
       alert(`${name} is already in contacts`);
       return;
     }
-    const newContactsArray = [...contacts, data];
-
-    this.setState({ contacts: newContactsArray });
+    data.id = uuidv4();
+    this.setState(({ contacts }) => ({
+      contacts: [...contacts, data],
+    }));
   };
 
   changeFilter = e => {
